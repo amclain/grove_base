@@ -39,6 +39,7 @@ defmodule GroveBase.MixProject do
   defp deps do
     [
       # Dependencies for all targets
+      {:ex_doc, "~> 0.21.3", only: :dev, runtime: false},
       {:nerves, "~> 1.5.0", runtime: false},
       {:shoehorn, "~> 0.6"},
       {:ring_logger, "~> 0.6"},
@@ -47,13 +48,16 @@ defmodule GroveBase.MixProject do
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.6", targets: @all_targets},
       {:nerves_init_gadget, "~> 0.4", targets: @all_targets},
-      {:circuits_gpio, "~> 0.4", targets: @all_targets},
-      {:circuits_i2c, "~> 0.3", targets: @all_targets},
-      {:circuits_uart, "~> 1.4", targets: @all_targets},
+      {:circuits_gpio, "~> 0.4.5", targets: @all_targets},
+      {:circuits_i2c, "~> 0.3.6", targets: @all_targets},
+      {:circuits_uart, "~> 1.4.1", targets: @all_targets},
 
       # Dependencies for specific targets
       # {:nerves_system_bbb, "~> 2.5", runtime: false, targets: :bbb},
-      {:nerves_system_bbb_grove, path: "../nerves_system_bbb_grove", runtime: false, targets: :bbb},
+
+      # https://github.com/amclain/nerves_system_bbb_grove
+      {:nerves_system_bbb_grove,
+       path: "../nerves_system_bbb_grove", runtime: false, targets: :bbb}
     ]
   end
 

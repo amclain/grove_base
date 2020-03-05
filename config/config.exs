@@ -26,3 +26,46 @@ config :logger, backends: [RingLogger]
 if Mix.target() != :host do
   import_config "target.exs"
 end
+
+config :grove_base,
+  io: %{
+    bbb: [
+      adc: [sample_rate: 1000],
+      adc_0: [],
+      adc_1: [],
+      adc_2: [],
+      adc_3: [],
+      gpio_50: [direction: :input, interrupt: :both],
+      gpio_51: [direction: :input, interrupt: :both],
+      gpio_115: [direction: :output],
+      gpio_117: [direction: :input, interrupt: :both],
+      uart_1: [speed: 115_200],
+      uart_4: [speed: 115_200]
+    ],
+    rpi: [
+      adc: [sample_rate: 1000],
+      adc_0: [],
+      adc_1: [],
+      adc_2: [],
+      adc_3: [],
+      adc_4: [],
+      adc_5: [],
+      adc_6: [],
+      adc_7: [],
+      gpio_5: [direction: :input, interrupt: :both],
+      gpio_6: [direction: :input, interrupt: :both],
+      gpio_12: [direction: :input, interrupt: :both],
+      gpio_13: [direction: :input, interrupt: :both],
+      gpio_16: [direction: :input, interrupt: :both],
+      gpio_17: [direction: :input, interrupt: :both],
+      gpio_18: [direction: :input, interrupt: :both],
+      gpio_19: [direction: :input, interrupt: :both],
+      gpio_22: [direction: :input, interrupt: :both],
+      gpio_23: [direction: :input, interrupt: :both],
+      gpio_24: [direction: :input, interrupt: :both],
+      gpio_25: [direction: :input, interrupt: :both],
+      gpio_26: [direction: :input, interrupt: :both],
+      gpio_27: [direction: :input, interrupt: :both],
+      uart: [speed: 115_200]
+    ]
+  }
