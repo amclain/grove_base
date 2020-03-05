@@ -38,6 +38,22 @@ defmodule GroveBase do
         @doc false
         def init(_) do
           config = GroveBase.config()
+          adc_sample_rate = config[:adc][:sample_rate]
+
+          adc_pids =
+            [0, 1, 2, 3]
+            |> Enum.reduce(%{}, fn adc_number, acc ->
+              adc_config = config[:"adc_#{adc_number}"]
+
+              if adc_config do
+                {:ok, adc_pid} =
+                  GroveBase.ADC.start_link(adc_number, self(), sample_rate: adc_sample_rate)
+
+                Map.put(acc, :"adc_#{adc_number}", adc_pid)
+              else
+                acc
+              end
+            end)
 
           gpio_pids =
             [50, 51, 115, 117]
@@ -68,6 +84,7 @@ defmodule GroveBase do
 
           {:ok,
            %{
+             adc_pids: adc_pids,
              gpio_pids: gpio_pids
            }}
         end
