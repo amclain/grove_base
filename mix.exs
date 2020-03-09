@@ -3,7 +3,7 @@ defmodule GroveBase.MixProject do
 
   @app :grove_base
   @version "0.1.0"
-  @all_targets [:bbb]
+  @all_targets [:bbb, :rpi4]
 
   def project do
     [
@@ -57,7 +57,8 @@ defmodule GroveBase.MixProject do
 
       # https://github.com/amclain/nerves_system_bbb_grove
       {:nerves_system_bbb_grove,
-       path: "../nerves_system_bbb_grove", runtime: false, targets: :bbb}
+       path: "../nerves_system_bbb_grove", runtime: false, targets: :bbb},
+      {:nerves_system_rpi4, "~> 1.10", runtime: false, targets: :rpi4}
     ]
   end
 

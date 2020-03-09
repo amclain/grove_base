@@ -20,7 +20,7 @@ defmodule GroveBase do
   @doc """
   Returns the identifier for the target platform.
 
-  Example: `:bbb` or `:rpi`
+  Example: `:bbb` or `:rpi4`
   """
   def target do
     Application.get_env(:grove_base, :target)
@@ -34,69 +34,63 @@ defmodule GroveBase do
         GenServer.start(__MODULE__, nil)
       end
 
-      if Mix.target() == :bbb do
-        @doc false
-        def init(_) do
-          config = GroveBase.config()
-          adc_sample_rate = config[:adc][:sample_rate]
+      @impl true
+      def init(_) do
+        config = GroveBase.config()
+        {:ok, i2c_ref} = Circuits.I2C.open("i2c-1")
 
-          adc_pids =
-            [0, 1, 2, 3]
-            |> Enum.reduce(%{}, fn adc_number, acc ->
-              adc_config = config[:"adc_#{adc_number}"]
+        adc_pids =
+          config
+          |> get_pins("adc")
+          |> Enum.reduce(%{}, fn adc_number, acc ->
+            adc_config = config[:"adc_#{adc_number}"]
 
-              if adc_config do
-                {:ok, adc_pid} =
-                  GroveBase.ADC.start_link(adc_number, self(), sample_rate: adc_sample_rate)
+            if adc_config do
+              {:ok, adc_pid} =
+                GroveBase.ADC.start_link(adc_number, self(),
+                  sample_rate: adc_config[:sample_rate],
+                  i2c_ref: i2c_ref
+                )
 
-                Map.put(acc, :"adc_#{adc_number}", adc_pid)
-              else
-                acc
-              end
-            end)
+              Map.put(acc, :"adc_#{adc_number}", adc_pid)
+            else
+              acc
+            end
+          end)
 
-          gpio_pids =
-            [50, 51, 115, 117]
-            |> Enum.reduce(%{}, fn pin, acc ->
-              pin_config = config[:"gpio_#{pin}"]
+        gpio_pids =
+          config
+          |> get_pins("gpio")
+          |> Enum.reduce(%{}, fn pin, acc ->
+            pin_config = config[:"gpio_#{pin}"]
 
-              if pin_config do
-                direction = pin_config[:direction]
-                interrupt = pin_config[:interrupt]
+            if pin_config do
+              direction = pin_config[:direction]
+              interrupt = pin_config[:interrupt]
 
-                unless direction, do: throw("Pin #{pin} :direction not set")
+              unless direction, do: throw("Pin #{pin} :direction not set")
 
-                opts =
-                  pin_config
-                  |> Keyword.delete(:direction)
-                  |> Keyword.delete(:interrupt)
+              opts =
+                pin_config
+                |> Keyword.delete(:direction)
+                |> Keyword.delete(:interrupt)
 
-                {:ok, gpio} = Circuits.GPIO.open(pin, direction, opts)
+              {:ok, gpio} = Circuits.GPIO.open(pin, direction, opts)
 
-                if interrupt,
-                  do: Circuits.GPIO.set_interrupts(gpio, interrupt)
+              if interrupt,
+                do: Circuits.GPIO.set_interrupts(gpio, interrupt)
 
-                Map.put(acc, :"gpio_#{pin}", gpio)
-              else
-                acc
-              end
-            end)
+              Map.put(acc, :"gpio_#{pin}", gpio)
+            else
+              acc
+            end
+          end)
 
-          {:ok,
-           %{
-             adc_pids: adc_pids,
-             gpio_pids: gpio_pids
-           }}
-        end
-      end
-
-      if Mix.target() == :rpi do
-        @doc false
-        def init(_) do
-          throw("TODO: Support Raspberry Pi")
-
-          {:ok, nil}
-        end
+        {:ok,
+         %{
+           adc_pids: adc_pids,
+           gpio_pids: gpio_pids
+         }}
       end
 
       def gpio_write(pid, pin, value) do
@@ -109,6 +103,24 @@ defmodule GroveBase do
         reply = Circuits.GPIO.write(gpio_pid, value)
 
         {:reply, reply, state}
+      end
+
+      defp get_pins(config, pin_prefix) do
+        pin_prefix =
+          case String.ends_with?(pin_prefix, "_") do
+            true -> pin_prefix
+            _ -> pin_prefix <> "_"
+          end
+
+        config
+        |> Keyword.keys()
+        |> Enum.filter(&(&1 |> Atom.to_string() |> String.starts_with?(pin_prefix)))
+        |> Enum.map(
+          &(&1
+            |> Atom.to_string()
+            |> String.trim_leading(pin_prefix)
+            |> String.to_integer())
+        )
       end
     end
   end

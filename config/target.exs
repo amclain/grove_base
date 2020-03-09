@@ -51,6 +51,11 @@ config :nerves_init_gadget,
   node_name: node_name,
   node_host: :mdns_domain
 
+config :nerves_network, :default,
+  eth0: [
+    ipv4_address_method: :dhcp
+  ]
+
 # Import target specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 # Uncomment to use target specific configurations
