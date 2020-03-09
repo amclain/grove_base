@@ -54,7 +54,8 @@ defmodule GroveBase.ADC do
   defp read_adc(state) do
     case GroveBase.target() do
       :bbb -> read_bbb_adc(state)
-      :rpi4 -> read_rpi4_adc(state)
+      :rpi0 -> read_rpi_adc(state)
+      :rpi4 -> read_rpi_adc(state)
     end
   end
 
@@ -67,7 +68,7 @@ defmodule GroveBase.ADC do
     string_value |> String.trim() |> String.to_integer()
   end
 
-  defp read_rpi4_adc(state) do
+  defp read_rpi_adc(state) do
     adc_address = <<@rpi_adc_base_address + state.adc_number>>
 
     {:ok, <<value::unsigned-little-integer-size(16)>>} =
