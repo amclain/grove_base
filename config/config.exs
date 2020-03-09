@@ -28,7 +28,7 @@ if Mix.target() != :host do
 end
 
 config :grove_base,
-  io: %{
+  io: [
     bbb: [
       adc_0: [sample_rate: 1000],
       adc_1: [sample_rate: 1000],
@@ -66,4 +66,4 @@ config :grove_base,
       gpio_27: [direction: :input, interrupt: :both],
       uart: [speed: 115_200]
     ]
-  }
+  ]
