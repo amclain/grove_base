@@ -1,5 +1,7 @@
 # GroveBase
 
+[![Hex Version](https://img.shields.io/hexpm/v/grove_base.svg)](https://hex.pm/packages/grove_base)
+
 A framework for using Seeed Studio's [Grove System](http://wiki.seeedstudio.com/Grove_System/), a standardized hardware prototyping system, with [Elixir](https://elixir-lang.org/) on embedded hardware with [Nerves](https://nerves-project.org/).
 
 An example is located in [`/implementation`](implementation).
@@ -8,9 +10,10 @@ An example is located in [`/implementation`](implementation).
 
 Create a new [Nerves app](https://hexdocs.pm/nerves/getting-started.html#creating-a-new-nerves-app).
 
-In the project `mix.exs` add GroveBase as a dependency for all targets:
+In the project's `mix.exs` file, add GroveBase as a dependency for all targets. See [hex](https://hex.pm/packages/grove_base) for releases of this framework.
+
 ```ex
-{:grove_base, github: "amclain/grove_base"},
+{:grove_base, "~> x.x.x"}
 ```
 
 Add the appropriate [Nerves systems](https://hexdocs.pm/nerves/targets.html#supported-targets-and-systems) for the hardware platforms you intend to target. If targeting the BeagleBone, add `amclain/nerves_system_bbb_grove` instead of the stock Nerves system.
