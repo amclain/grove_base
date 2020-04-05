@@ -1,14 +1,18 @@
 defmodule GroveBase.MixProject do
   use Mix.Project
 
+  @description "A framework for using Seeed Studio's Grove System, a standardized hardware prototyping system, with Elixir on embedded hardware with Nerves."
+
   def project do
     [
       app: :grove_base,
       version: "0.1.0",
+      description: @description,
       elixir: "~> 1.10",
       build_embedded: true,
       deps: deps(),
-      docs: docs()
+      docs: docs(),
+      package: package()
     ]
   end
 
@@ -31,6 +35,21 @@ defmodule GroveBase.MixProject do
     [
       extras: [
         "README.md"
+      ]
+    ]
+  end
+
+  defp package do
+    [
+      name: "grove_base",
+      maintainers: ["Alex McLain"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/amclain/grove_base"},
+      files: [
+        "lib",
+        "mix.exs",
+        "README.md",
+        "LICENSE.txt"
       ]
     ]
   end
