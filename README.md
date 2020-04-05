@@ -2,6 +2,7 @@
 
 [![Hex Version](https://img.shields.io/hexpm/v/grove_base.svg)](https://hex.pm/packages/grove_base)
 [![API Documentation](http://img.shields.io/badge/docs-api-blue.svg)](https://hexdocs.pm/grove_base/)
+[![MIT License](https://img.shields.io/badge/license-MIT-yellowgreen.svg)](https://github.com/amclain/grove_base/blob/master/LICENSE.txt)
 
 A framework for using Seeed Studio's [Grove System](http://wiki.seeedstudio.com/Grove_System/), a standardized hardware prototyping system, with [Elixir](https://elixir-lang.org/) on embedded hardware with [Nerves](https://nerves-project.org/).
 
