@@ -1,4 +1,4 @@
-defmodule GroveBase.Implementation do
+defmodule Implementation do
   @moduledoc """
   An implementation of GroveBase to use for testing
   when developing this library.
