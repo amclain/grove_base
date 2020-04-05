@@ -53,13 +53,10 @@ defmodule GroveBase.MixProject do
       {:circuits_uart, "~> 1.4.1", targets: @all_targets},
 
       # Dependencies for specific targets
-      # {:nerves_system_bbb, "~> 2.5", runtime: false, targets: :bbb},
-
-      # https://github.com/amclain/nerves_system_bbb_grove
       {:nerves_system_bbb_grove,
-       path: "../nerves_system_bbb_grove", runtime: false, targets: :bbb},
-      {:nerves_system_rpi0, "~> 1.10", runtime: false, targets: :rpi0},
-      {:nerves_system_rpi4, "~> 1.10", runtime: false, targets: :rpi4}
+       github: "amclain/nerves_system_bbb_grove", tag: "0.2.0", runtime: false, targets: :bbb},
+      {:nerves_system_rpi0, "~> 1.11", runtime: false, targets: :rpi0},
+      {:nerves_system_rpi4, "~> 1.11", runtime: false, targets: :rpi4}
     ]
   end
 
