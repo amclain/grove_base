@@ -7,7 +7,8 @@ defmodule GroveBase.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       build_embedded: true,
-      deps: deps()
+      deps: deps(),
+      docs: docs()
     ]
   end
 
@@ -25,6 +26,14 @@ defmodule GroveBase.MixProject do
       {:circuits_gpio, "~> 0.4.5"},
       {:circuits_i2c, "~> 0.3.6"},
       {:circuits_uart, "~> 1.4.1"}
+    ]
+  end
+
+  defp docs do
+    [
+      extras: [
+        "README.md"
+      ]
     ]
   end
 end
