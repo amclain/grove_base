@@ -1,6 +1,8 @@
 defmodule GroveBase do
   @moduledoc """
-  Nerves support for the Seeed Studio Grove base.
+  A framework for using Seeed Studio's [Grove System](http://wiki.seeedstudio.com/Grove_System/),
+  a standardized hardware prototyping system, with [Elixir](https://elixir-lang.org/)
+  on embedded hardware with [Nerves](https://nerves-project.org/).
 
   Raspberry Pi:
   https://www.seeedstudio.com/Grove-Base-Hat-for-Raspberry-Pi.html
