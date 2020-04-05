@@ -1,4 +1,4 @@
-# GroveBase
+# Grove Base
 
 [![Hex Version](https://img.shields.io/hexpm/v/grove_base.svg)](https://hex.pm/packages/grove_base)
 [![API Documentation](http://img.shields.io/badge/docs-api-blue.svg)](https://hexdocs.pm/grove_base/)
