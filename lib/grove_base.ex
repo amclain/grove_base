@@ -39,7 +39,15 @@ defmodule GroveBase do
       @impl true
       def init(_) do
         config = GroveBase.config()
-        {:ok, i2c_ref} = Circuits.I2C.open("i2c-1")
+
+        i2c_path =
+          case GroveBase.target() do
+            :bbb -> "i2c-2"
+            :rpi0 -> "i2c-1"
+            :rpi4 -> "i2c-1"
+          end
+
+        {:ok, i2c_ref} = Circuits.I2C.open(i2c_path)
 
         adc_pids =
           config
@@ -91,7 +99,8 @@ defmodule GroveBase do
         {:ok,
          %{
            adc_pids: adc_pids,
-           gpio_pids: gpio_pids
+           gpio_pids: gpio_pids,
+           i2c_ref: i2c_ref
          }}
       end
 
