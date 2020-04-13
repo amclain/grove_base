@@ -53,7 +53,7 @@ defmodule Implementation.MixProject do
       {:nerves_system_rpi0, "~> 1.11", runtime: false, targets: :rpi0},
       {:nerves_system_rpi4, "~> 1.11", runtime: false, targets: :rpi4},
       {:nerves_system_bbb_grove,
-       github: "amclain/nerves_system_bbb_grove", tag: "v0.2.0", runtime: false, targets: :bbb}
+       github: "amclain/nerves_system_bbb_grove", tag: "v0.2.1", runtime: false, targets: :bbb}
     ]
   end
 
