@@ -1,3 +1,5 @@
+Code.require_file("coverage.ignore.exs")
+
 defmodule Implementation.MixProject do
   use Mix.Project
 
@@ -16,11 +18,16 @@ defmodule Implementation.MixProject do
       aliases: aliases(),
       deps: deps(),
       releases: [{@app, release()}],
+      preferred_cli_env: preferred_cli_env(),
       preferred_cli_target: [run: :host, test: :host],
       dialyzer: [
         ignore_warnings: "dialyzer.ignore.exs",
         list_unused_filters: true,
         plt_file: {:no_warn, "_build/#{Mix.target()}_#{Mix.env()}/plt/dialyxir.plt"}
+      ],
+      test_coverage: [
+        tool: Coverex.Task,
+        ignore_modules: Implementation.Coverage.ignore_modules()
       ]
     ]
   end
@@ -42,8 +49,17 @@ defmodule Implementation.MixProject do
 
   defp aliases do
     [
+      "coverage.show": "do test, cmd xdg-open cover/modules.html",
       dialyzer: "do cmd mkdir -p _build/#{Mix.target()}_#{Mix.env()}/plt, dialyzer",
-      loadconfig: [&bootstrap/1]
+      loadconfig: [&bootstrap/1],
+      test: "espec --cover"
+    ]
+  end
+
+  defp preferred_cli_env do
+    [
+      "coverage.show": :test,
+      espec: :test
     ]
   end
 
@@ -56,7 +72,9 @@ defmodule Implementation.MixProject do
       {:shoehorn, "~> 0.6"},
       {:ring_logger, "~> 0.6"},
       {:toolshed, "~> 0.2"},
+      {:coverex, "~> 1.5.0", only: :test},
       {:dialyxir, "~> 1.0.0", only: :dev, runtime: false},
+      {:espec, "~> 1.8.2", only: :test},
 
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.6", targets: @all_targets},

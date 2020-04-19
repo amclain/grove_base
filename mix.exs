@@ -1,3 +1,5 @@
+Code.require_file("coverage.ignore.exs")
+
 defmodule GroveBase.MixProject do
   use Mix.Project
 
@@ -14,10 +16,15 @@ defmodule GroveBase.MixProject do
       deps: deps(),
       docs: docs(),
       package: package(),
+      preferred_cli_env: preferred_cli_env(),
       dialyzer: [
         ignore_warnings: "dialyzer.ignore.exs",
         list_unused_filters: true,
         plt_file: {:no_warn, "_build/#{Mix.env()}/plt/dialyxir.plt"}
+      ],
+      test_coverage: [
+        tool: Coverex.Task,
+        ignore_modules: GroveBase.Coverage.ignore_modules()
       ]
     ]
   end
@@ -30,13 +37,24 @@ defmodule GroveBase.MixProject do
 
   defp aliases do
     [
-      dialyzer: "do cmd mkdir -p _build/#{Mix.env()}/plt, dialyzer"
+      "coverage.show": "do test, cmd xdg-open cover/modules.html",
+      dialyzer: "do cmd mkdir -p _build/#{Mix.env()}/plt, dialyzer",
+      test: "espec --cover"
+    ]
+  end
+
+  defp preferred_cli_env do
+    [
+      "coverage.show": :test,
+      espec: :test
     ]
   end
 
   defp deps do
     [
+      {:coverex, "~> 1.5.0", only: :test},
       {:dialyxir, "~> 1.0.0", only: :dev, runtime: false},
+      {:espec, "~> 1.8.2", only: :test},
       {:ex_doc, "~> 0.21.3", only: :dev, runtime: false},
       {:circuits_gpio, "~> 0.4.5"},
       {:circuits_i2c, "~> 0.3.6"},

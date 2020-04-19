@@ -2,7 +2,8 @@
 [
   inputs: [
     "{mix,.formatter}.exs",
-    "{config,lib,test}/**/*.{ex,exs}",
+    "{config,lib,spec}/**/*.{ex,exs}",
+    "coverage.ignore.exs",
     "dialyzer.ignore.exs"
   ]
 ]

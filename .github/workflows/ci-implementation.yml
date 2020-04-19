@@ -2,6 +2,31 @@ on:
   - push
 
 jobs:
+  unit_tests:
+    name: Unit Tests
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1
+        with:
+          otp-version: 22.3
+          elixir-version: 1.10.2
+      - name: Install Nerves bootstrap
+        run: mix archive.install --force hex nerves_bootstrap
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        run: mix deps.get
+        working-directory: implementation
+      - name: Compile
+        env:
+          MIX_ENV: test
+        run: mix compile
+        working-directory: implementation
+      - name: Run unit tests
+        run: mix test
+        working-directory: implementation
+
   type_check:
     name: Type Check
     runs-on: ubuntu-18.04

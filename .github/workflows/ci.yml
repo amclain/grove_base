@@ -2,6 +2,26 @@ on:
   - push
 
 jobs:
+  unit_tests:
+    name: Unit Tests
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1
+        with:
+          otp-version: 22.3
+          elixir-version: 1.10.2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        run: mix deps.get
+      - name: Compile
+        env:
+          MIX_ENV: test
+        run: mix compile
+      - name: Run unit tests
+        run: mix test
+
   type_check:
     name: Type Check
     runs-on: ubuntu-18.04
