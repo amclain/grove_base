@@ -1,0 +1,51 @@
+on:
+  - push
+
+jobs:
+  type_check:
+    name: Type Check
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        MIX_TARGET: [bbb, rpi0, rpi4]
+    env:
+      MIX_TARGET: ${{ matrix.MIX_TARGET }}
+    steps:
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1
+        with:
+          otp-version: 22.3
+          elixir-version: 1.10.2
+      - name: Create fake ssh file
+        run: mkdir -p ~/.ssh && touch ~/.ssh/id_rsa.pub
+      - name: Install Nerves bootstrap
+        run: mix archive.install --force hex nerves_bootstrap
+      - name: Restore Nerves artifacts
+        uses: actions/cache@v1
+        with:
+          path: ~/.nerves/artifacts
+          key: implementation-nerves-artifacts-${{ github.ref }}-${{ env.MIX_TARGET }}-${{ github.sha }}
+          restore-keys: |
+            implementation-nerves-artifacts-${{ github.ref }}-${{ env.MIX_TARGET }}-${{ github.sha }}
+            implementation-nerves-artifacts-${{ github.ref }}-${{ env.MIX_TARGET }}-
+            implementation-nerves-artifacts-refs/heads/master-${{ env.MIX_TARGET }}-
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        run: mix deps.get
+        working-directory: implementation
+      - name: Restore PLTs
+        uses: actions/cache@v1
+        with:
+          path: implementation/_build/${{ env.MIX_TARGET }}_dev/plt
+          key: implementation-plt-${{ github.ref }}-${{ env.MIX_TARGET }}-${{ github.sha }}
+          restore-keys: |
+            implementation-plt-${{ github.ref }}-${{ env.MIX_TARGET }}-${{ github.sha }}
+            implementation-plt-${{ github.ref }}-${{ env.MIX_TARGET }}-
+            implementation-plt-refs/heads/master-${{ env.MIX_TARGET }}-
+      - name: Compile
+        run: mix compile
+        working-directory: implementation
+      - name: Run dialyzer
+        run: mix dialyzer
+        working-directory: implementation
