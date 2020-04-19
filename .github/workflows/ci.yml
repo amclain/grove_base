@@ -1,0 +1,30 @@
+on:
+  - push
+
+jobs:
+  type_check:
+    name: Type Check
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1
+        with:
+          otp-version: 22.3
+          elixir-version: 1.10.2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Get dependencies
+        run: mix deps.get
+      - name: Restore PLTs
+        uses: actions/cache@v1
+        with:
+          path: _build/dev/plt
+          key: plt-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            plt-${{ github.ref }}-${{ github.sha }}
+            plt-${{ github.ref }}-
+            plt-refs/heads/master-
+      - name: Compile
+        run: mix compile
+      - name: Run dialyzer
+        run: mix dialyzer

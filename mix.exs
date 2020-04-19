@@ -10,9 +10,15 @@ defmodule GroveBase.MixProject do
       description: @description,
       elixir: "~> 1.10",
       build_embedded: true,
+      aliases: aliases(),
       deps: deps(),
       docs: docs(),
-      package: package()
+      package: package(),
+      dialyzer: [
+        ignore_warnings: "dialyzer.ignore.exs",
+        list_unused_filters: true,
+        plt_file: {:no_warn, "_build/#{Mix.env()}/plt/dialyxir.plt"}
+      ]
     ]
   end
 
@@ -22,8 +28,15 @@ defmodule GroveBase.MixProject do
     ]
   end
 
+  defp aliases do
+    [
+      dialyzer: "do cmd mkdir -p _build/#{Mix.env()}/plt, dialyzer"
+    ]
+  end
+
   defp deps do
     [
+      {:dialyxir, "~> 1.0.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.21.3", only: :dev, runtime: false},
       {:circuits_gpio, "~> 0.4.5"},
       {:circuits_i2c, "~> 0.3.6"},
