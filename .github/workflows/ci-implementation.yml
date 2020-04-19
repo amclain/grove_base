@@ -24,11 +24,11 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.nerves/artifacts
-          key: implementation-nerves-artifacts-${{ github.ref }}-${{ env.MIX_TARGET }}-${{ github.sha }}
+          key: implementation-nerves-artifacts-${{ env.MIX_TARGET }}-${{ github.ref }}-${{ github.sha }}
           restore-keys: |
-            implementation-nerves-artifacts-${{ github.ref }}-${{ env.MIX_TARGET }}-${{ github.sha }}
-            implementation-nerves-artifacts-${{ github.ref }}-${{ env.MIX_TARGET }}-
-            implementation-nerves-artifacts-refs/heads/master-${{ env.MIX_TARGET }}-
+            implementation-nerves-artifacts-${{ env.MIX_TARGET }}-${{ github.ref }}-${{ github.sha }}
+            implementation-nerves-artifacts-${{ env.MIX_TARGET }}-${{ github.ref }}-
+            implementation-nerves-artifacts-${{ env.MIX_TARGET }}-refs/heads/master-
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Get dependencies
@@ -38,11 +38,12 @@ jobs:
         uses: actions/cache@v1
         with:
           path: implementation/_build/${{ env.MIX_TARGET }}_dev/plt
-          key: implementation-plt-${{ github.ref }}-${{ env.MIX_TARGET }}-${{ github.sha }}
+          key: implementation-plt-${{ env.MIX_TARGET }}-${{ github.ref }}-${{ github.sha }}
           restore-keys: |
-            implementation-plt-${{ github.ref }}-${{ env.MIX_TARGET }}-${{ github.sha }}
-            implementation-plt-${{ github.ref }}-${{ env.MIX_TARGET }}-
-            implementation-plt-refs/heads/master-${{ env.MIX_TARGET }}-
+            implementation-plt-${{ env.MIX_TARGET }}-${{ github.ref }}-${{ github.sha }}
+            implementation-plt-${{ env.MIX_TARGET }}-${{ github.ref }}-
+            implementation-plt-${{ env.MIX_TARGET }}-refs/heads/master-
+            implementation-plt-
       - name: Compile
         run: mix compile
         working-directory: implementation
