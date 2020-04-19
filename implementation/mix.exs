@@ -51,6 +51,7 @@ defmodule Implementation.MixProject do
     [
       "coverage.show": "do test, cmd xdg-open cover/modules.html",
       dialyzer: "do cmd mkdir -p _build/#{Mix.target()}_#{Mix.env()}/plt, dialyzer",
+      "docs.show": "do docs, cmd xdg-open doc/index.html",
       loadconfig: [&bootstrap/1],
       test: "espec --cover"
     ]
@@ -75,6 +76,7 @@ defmodule Implementation.MixProject do
       {:coverex, "~> 1.5.0", only: :test},
       {:dialyxir, "~> 1.0.0", only: :dev, runtime: false},
       {:espec, "~> 1.8.2", only: :test},
+      {:ex_doc, "~> 0.21.3", only: :dev, runtime: false},
 
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.6", targets: @all_targets},

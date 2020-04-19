@@ -39,6 +39,7 @@ defmodule GroveBase.MixProject do
     [
       "coverage.show": "do test, cmd xdg-open cover/modules.html",
       dialyzer: "do cmd mkdir -p _build/#{Mix.env()}/plt, dialyzer",
+      "docs.show": "do docs, cmd xdg-open doc/index.html",
       test: "espec --cover"
     ]
   end
