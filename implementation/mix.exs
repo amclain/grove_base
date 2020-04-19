@@ -16,7 +16,7 @@ defmodule Implementation.MixProject do
       aliases: aliases(),
       deps: deps(),
       releases: [{@app, release()}],
-      preferred_cli_target: [run: :host, test: :host, dialyzer: :rpi4],
+      preferred_cli_target: [run: :host, test: :host],
       dialyzer: [
         ignore_warnings: "dialyzer.ignore.exs",
         list_unused_filters: true,
